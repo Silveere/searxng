@@ -10,6 +10,7 @@ search_url = None
 url_query = None
 content_query = None
 title_query = None
+thumbnail_query = False
 content_html_to_text = False
 title_html_to_text = False
 paging = False
@@ -127,20 +128,28 @@ def response(resp):
                 content = query(result, content_query)[0]
             except:
                 content = ""
+            try:
+                img_src = query(result, thumbnail_query)[0]
+            except:
+                img_src = ""
+
             results.append(
                 {
                     'url': to_string(url),
                     'title': title_filter(to_string(title)),
                     'content': content_filter(to_string(content)),
+                    'img_src': to_string(img_src),
                 }
             )
     else:
-        for url, title, content in zip(query(json, url_query), query(json, title_query), query(json, content_query)):
+        for url, title, content, img_src in zip(query(json, url_query), query(json, title_query), query(json, content_query),
+                                                      query(json, thumbnail_query)):
             results.append(
                 {
                     'url': to_string(url),
                     'title': title_filter(to_string(title)),
                     'content': content_filter(to_string(content)),
+                    'img_src': to_string(img_src),
                 }
             )
 
